@@ -73,10 +73,29 @@ keys = list(keys)
 random.shuffle(keys)
 word = { key: word[key] for key in keys}
 
+n=1
 for i in word:
     a=word[i]
     b=a[0]
-    print("[%s]"%(i))
+    print("(%d/%d)[%s]"%(n,len(word),i))
+    c=input("단어를 입력:%s____\n"%b)
+
+    if c=='end':
+        break
+
+    if c==word[i]:
+        print("[정답임]\n")
+    else:
+        print("[틀림답은[%s]]"%word[i] )
+        wrong[i]=word[i]
+        
+    n+=1
+        
+        
+n=0
+print("틀ㄹ린무 ㄴ제 다시풀어보기!!!!!")
+for i in wrong:
+    print("(%d/%d)[%s]"%(n,len(wrong),i))
     c=input("단어를 입력:%s____\n"%b)
 
     if c=='end':
@@ -87,16 +106,3 @@ for i in word:
     else:
         print("[틀림답은[%s]]"%word[i] )
         wrong[i]=word[i]
-        
-print("틀ㄹ린무 ㄴ제 다시풀어보기!!!!!")
-for i in wrong:
-    print("[%s]"%(i))
-    c=input("단어를 입력:")
-
-    if c=='end':
-        break
-
-    if c==wrong[i]:
-        print("정답임")
-    else:
-        print("틀림답은[%s]"%wrong[i] )
