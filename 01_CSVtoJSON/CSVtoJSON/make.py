@@ -19,7 +19,7 @@ def readcsv():
         e=VOCA(line[0],line[1])
         Voca_list.append(e)
 
-#단어장 출력
+
 def print_voca(vo):
     cnt=0;
     for i in vo:
