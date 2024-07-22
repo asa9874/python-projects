@@ -1,0 +1,108 @@
+import random
+
+word={'(n.) a person who studies languages or linguistics':'linguist',
+      '(v.) to change the original form of something so that it is damaged or spoiled in some way ':'corrupt',
+      '(n.) the words, abbreviations, etc. that people use when communicating on the Internet':'netspeak',
+      '(n.) all the people who were born at about the same time':'generation',
+      '(adj.) average or normal rather than having special or unusual features (adj.) believed to be correct and used by most people':'standard',
+      '(n.) the ability to read and write':'literacy',
+      '(v.) to hurt or injure somebody or to damage something ':'harm',
+      '(v.) to think or say that somebody/something is responsible for something bad':'blame',
+      '(n.) the reason why somebody does something or behaves in a particular way':'motivation',
+      '(adv.) much, a lot ':'considerably',
+      '(v.) to say that you are annoyed, unhappy or not satisfied about somebody/something':'complain',
+      '(v.) bring back to life; to become or to make sb/sth become conscious or healthy and strong again':'revive',
+      '(adj.) lively and attractive':'vivacious',
+      '(adj.) very important, necessary (important for the life of sth)':'vital',
+      '(v.) to move from one place to another':'transfer',
+      '(v.) to make sb or sth completely different; to change the form of sth ':'transform',
+      '(v.) to change spoken or written words into another language':'translate',
+      '(adj.) very clear and detailed (lifelike); producing very clear pictures in your mind':'vivid',
+      '(adj.) clear or thin enough for you to see things through ':'transparent',
+      '(v.) to create conditions that allow someone to have the opportunity to learn or experience new things(v.) to show something that is usually hidden':'expose',
+      '(adj.) able to speak two languages equally well':'bilingual',
+      '(n.) the language of the country that someone is born in or native to':'native language',
+      '(n.) a thing that helps you to be better or more successful than other people':'advantage',
+      '(v.) to state or show that something is definitely true or correct, especially by providing evidence':'confirm',
+      '(adj.) always behaving in the same way, or having the same opinions, standards, etc. ':'consistent',
+      '(adj.) completely sure about something':'convinced',
+      '(n.) the ability to understand or to do something':'capacity',
+      '(v.) to not do something until a later time or to make something happen at a later time':'delay',
+      '(v.) to get involved in a situation that does not concern you, in a way that annoys other people':'interfere',
+      '(adj.) large in amount, value or importance':'substantial',
+      '(v.) to become or to make something become smaller, weaker, etc. ':'diminish',
+      '(n.) the reason why somebody does something or behaves in a particular way':'motivation',
+      '(adj.) sensible; based on good judgement':'wise',
+      '(n.) the number of births every year for every 1,000 people in the population of a place':'birth rate',
+      '(n.) a person who has come to live permanently in a country that is not their own':'immigrant',
+      '(n.) all the people who work for a particular company, organization, etc. ':'workforce',
+      '(v.) to become smaller, fewer, weaker, etc.':'decline',
+      '(v.) to persuade somebody to do something by making it easier for them and making them believe it is a good thing to do':'encourage',
+      '(n.) a plan of action agreed or chosen by a political party, a business, etc.':'policy',
+      '(n.) the relationship between production, trade and the supply of money in a particular country or region':'economy',
+      '(adj.) connected with the culture of a particular society or group, its customs, beliefs, etc. ':'cultural',
+      '(n.) a general direction in which a situation is changing or developing ':'trend',
+      '(adj.) greater in amount, number, value, size, etc':'increased',
+      '(v.) to have a meeting, competition, conversation, etc. ':'hold',
+      '(v.) to take part in or become involved in an activity':'participate',
+      '(v.) to attract or interest somebody':'appeal',
+      '(v.) (sports) to play much better than your opponent in a game(v.) to control or have a lot of influence over sb/sth especially in an unpleasant way':'dominate',
+      '(n.) a situation when there is not enough of the people or things that are needed':'shortage',
+      '(n.) the quality that makes you continue trying to do something even when it is difficult':'determination',
+      '(v.) to defeat a person or a team so that they no longer take part in a competition(v.) to remove or get rid of sth/sb':'eliminate',
+      '(n.) a feeling of great pleasure':'delight',
+      '(n.) a name, mark, logo, and/or symbol that companies use to distinguish their product from others ':'brand',
+      '(n.) a belief that something will happen because it is likely(n.) a strong belief about the way something should happen or how somebody should behave':'expectation',
+      '(n.) a fact or an event in nature or society, especially one that is not fully understood':'phenomenon',
+      '(v.) to help sell a product and service or make it more popular by advertising it or offering it at a special price(v.) to help something to happen or develop':'promote',
+      '(n.) the activity and industry of advertising things to people on television, in newspapers, on the Internet, etc.':'advertising',
+      '(n.) a large board on the outside of a building or at the side of the road, used for putting advertisements on ':'billboard',
+      '(n.) a company that operates in several different countries, especially a large and powerful company':'multinational',
+      '(adj.) not very noticeable or obvious':'subtle',
+      '(n.) a person who buys goods or uses services':'consumer',
+      '(n.) a word or phrase that is easy to remember, used for example by a political party or in advertising to attract people’s attention ':'slogan',
+      '(n.) a thing that is grown or produced, usually for sale':'product',
+      '(n.) a printed design or symbol that a company or an organization uses as its special sign':'logo',
+
+      }
+
+wrong={}
+
+keys = word.keys()
+keys = list(keys)
+random.shuffle(keys)
+word = { key: word[key] for key in keys}
+
+n=1
+for i in word:
+    a=word[i]
+    b=a[0]
+    print("(%d/%d)[%s]"%(n,len(word),i))
+    c=input("단어를 입력:%s____\n"%b)
+
+    if c=='end':
+        break
+
+    if c==word[i]:
+        print("[정답임]\n")
+    else:
+        print("[틀림답은[%s]]"%word[i] )
+        wrong[i]=word[i]
+        
+    n+=1
+        
+        
+n=0
+print("틀ㄹ린무 ㄴ제 다시풀어보기!!!!!")
+for i in wrong:
+    print("(%d/%d)[%s]"%(n,len(wrong),i))
+    c=input("단어를 입력:%s____\n"%b)
+
+    if c=='end':
+        break
+
+    if c==word[i]:
+        print("[정답임]")
+    else:
+        print("[틀림답은[%s]]"%word[i] )
+        wrong[i]=word[i]
