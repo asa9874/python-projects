@@ -15,3 +15,5 @@
 ### 07. [노래,음악 분리하기](./07_mp3_seperate/)
 
 ### 08. [구글 제미니 테스트](./08_LLM_Gemini_API/)
+
+### 09. [애니 데이터 selenium 크롤링](./09_CrolAnimationData/)
