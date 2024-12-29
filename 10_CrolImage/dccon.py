@@ -1,3 +1,5 @@
+#디씨콘 다운받기
+
 import selenium
 import requests
 from selenium import webdriver
@@ -30,17 +32,31 @@ def create_folder(folder_name):
         os.makedirs(folder_name)
 
 # 이미지 다운로드 함수
-def download_image(url, folder, file_name):
+def download_image_with_cookies(src, folder, file_name, driver):
     try:
-        response = requests.get(url, stream=True)
+        # Selenium에서 쿠키 추출
+        cookies = driver.get_cookies()
+        session = requests.Session()
+        for cookie in cookies:
+            session.cookies.set(cookie['name'], cookie['value'])
+
+        # 요청 보내기
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+            "Referer": driver.current_url,  # 현재 페이지 URL을 Referrer로 설정
+        }
+        response = session.get(src, headers=headers, stream=True)
+
         if response.status_code == 200:
             with open(os.path.join(folder, file_name), 'wb') as file:
                 for chunk in response.iter_content(1024):
                     file.write(chunk)
+            print(f"Successfully downloaded: {file_name}")
+        else:
+            print(f"Failed to download {src}: Status code {response.status_code}")
     except Exception as e:
-        print(f"Error downloading {url}: {e}")
+        print(f"Error downloading {src}: {e}")
 
-# 이미지 다운로드 메인 함수
 def download_images_from_url(target_url, output_folder):
     create_folder(output_folder)
 
@@ -54,10 +70,10 @@ def download_images_from_url(target_url, output_folder):
 
         for i, img in enumerate(images):
             src = img.get_attribute('src')
-            print(f"Downloading image {i + 1}: {src}")
-            file_extension = src.split('.')[-1]
-            file_name = f"image_{i + 1}.{file_extension}"
-            download_image(src, output_folder, file_name)
+            if src and 'dccon.php' in src:  # 쿼리 형태 필터링
+                print(f"Downloading image {i + 1}: {src}")
+                file_name = f"image_{i + 1}.jpg"  # 기본적으로 jpg 확장자 지정
+                download_image_with_cookies(src, output_folder, file_name,browser)
 
     except Exception as e:
         print(f"An error occurred: {e}")
