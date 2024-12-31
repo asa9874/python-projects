@@ -68,7 +68,7 @@ def download_images_from_url(target_url, output_folder):
 
             # 파일 이름에 적합하지 않은 문자는 제거
             sanitized_src = re.sub(r'[\\/:*?"<>|]', '_', src.split('/')[-1])
-            file_name = f"image_{i + 1}_{sanitized_src[:5]}.{file_extension}"  # 길이 제한
+            file_name = f"image_{i + 1}_{sanitized_src[5:]}.{file_extension}"  # 길이 제한
 
             # 이미지 다운로드
             download_image(src, output_folder, file_name)
@@ -79,9 +79,9 @@ def download_images_from_url(target_url, output_folder):
 if __name__ == "__main__":
     text = input("검색어:")
     output_dir = "downloaded_images"
-    counts= 3
+    counts= 10
 
-    for count in range(counts):
+    for count in range(6,counts):
         url="https://www.google.com/search?q="+text+"&sca_esv=fe638ba52ee54819&biw=958&bih=910&tbm=isch&ei=C-lzZ92LK-iivr0PzPbvwAM&start="+str(count*20)+"&sa=N"
         download_images_from_url(url, output_dir)
     print("다운완료")
