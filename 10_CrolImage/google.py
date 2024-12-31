@@ -1,14 +1,12 @@
-#디씨콘 다운받기
-
 import selenium
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
 
 import time
 import os
+import re
 
 # 크롬 옵션
 chrome_options = Options()
@@ -32,31 +30,20 @@ def create_folder(folder_name):
         os.makedirs(folder_name)
 
 # 이미지 다운로드 함수
-def download_image_with_cookies(src, folder, file_name, driver):
+def download_image(url, folder, file_name):
     try:
-        # Selenium에서 쿠키 추출
-        cookies = driver.get_cookies()
-        session = requests.Session()
-        for cookie in cookies:
-            session.cookies.set(cookie['name'], cookie['value'])
-
-        # 요청 보내기
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-            "Referer": driver.current_url,  # 현재 페이지 URL을 Referrer로 설정
-        }
-        response = session.get(src, headers=headers, stream=True)
-
+        response = requests.get(url, stream=True)
         if response.status_code == 200:
             with open(os.path.join(folder, file_name), 'wb') as file:
                 for chunk in response.iter_content(1024):
                     file.write(chunk)
             print(f"Successfully downloaded: {file_name}")
         else:
-            print(f"Failed to download {src}: Status code {response.status_code}")
+            print(f"Failed to download {url}: Status code {response.status_code}")
     except Exception as e:
-        print(f"Error downloading {src}: {e}")
+        print(f"Error downloading {url}: {e}")
 
+# 이미지 다운로드 메인 함수
 def download_images_from_url(target_url, output_folder):
     create_folder(output_folder)
 
@@ -70,22 +57,33 @@ def download_images_from_url(target_url, output_folder):
 
         for i, img in enumerate(images):
             src = img.get_attribute('src')
-            if src and 'dccon.php' in src:  # 쿼리 형태 필터링
-                print(f"Downloading image {i + 1}: {src}")
-                file_name = f"image_{target_url.split('#')[-1]}_{i + 1}.jpg"  # 기본적으로 jpg 확장자 지정
-                download_image_with_cookies(src, output_folder, file_name,browser)
+            if not src:
+                continue
+            print(f"Processing image {i + 1}: {src}")
+
+            # 확장자 확인 및 파일 이름 정리
+            file_extension = src.split('.')[-1]
+            if not re.match(r'^[a-zA-Z0-9]+$', file_extension):
+                file_extension = 'jpg'  # 기본 확장자로 설정
+
+            # 파일 이름에 적합하지 않은 문자는 제거
+            sanitized_src = re.sub(r'[\\/:*?"<>|]', '_', src.split('/')[-1])
+            file_name = f"image_{i + 1}_{sanitized_src[:5]}.{file_extension}"  # 길이 제한
+
+            # 이미지 다운로드
+            download_image(src, output_folder, file_name)
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        
 
 if __name__ == "__main__":
-    baseurl="https://dccon.dcinside.com/hot/1/title/%EC%AD%90%EC%96%B4#"
-    #urls=["66513","68068","114183","67881","91120","98166","102317"]
-    urls=["102317","88998","92005","65242","128553","59008","89381"]
-    for url in urls:
-        #url = input("URL:")
-        output_dir = "downloaded_images"
-        download_images_from_url(baseurl+url, output_dir)
-        print("다운완료")
+    text = input("검색어:")
+    output_dir = "downloaded_images"
+    counts= 3
+
+    for count in range(counts):
+        url="https://www.google.com/search?q="+text+"&sca_esv=fe638ba52ee54819&biw=958&bih=910&tbm=isch&ei=C-lzZ92LK-iivr0PzPbvwAM&start="+str(count*20)+"&sa=N"
+        download_images_from_url(url, output_dir)
+    print("다운완료")
     browser.quit()
+
