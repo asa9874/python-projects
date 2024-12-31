@@ -1,3 +1,4 @@
+#webp 파일을 jpg 파일로 변환하는 코드
 from PIL import Image
 import os
 
@@ -15,5 +16,5 @@ def convert_webp_to_jpg(directory):
                 img.convert("RGB").save(jpg_path, "JPEG")
             print(f"{filename} -> {filename.replace('.webp', '.jpg')} 변환 완료")
 
-# 사용 예시
-convert_webp_to_jpg("C:\\Users\\asa\\Desktop\\dataset")
+#경로적으셈
+convert_webp_to_jpg("경로")
